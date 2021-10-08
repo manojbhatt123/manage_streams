@@ -1,0 +1,4 @@
+psycopg2==2.9.1
+django-environ==0.7.0
+https://github.com/contifyhub/django-fetch-streams/archive/refs/tags/v1.0.0.0.tar.gz
+https://github.com/dowjones/dj-dna-streams-python/archive/refs/tags/release-1.3.2.tar.gz
