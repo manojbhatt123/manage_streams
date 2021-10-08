@@ -81,9 +81,7 @@ WSGI_APPLICATION = 'manage_streams.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': env.db(
-        'DATABASE_DEFAULT_URL', default='postgres://django_app:@:/contify_db'
-    ),
+    'default': env.db('DATABASE_DEFAULT_URL'),
 }
 
 # Password validation
