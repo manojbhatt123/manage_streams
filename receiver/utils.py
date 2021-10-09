@@ -21,11 +21,8 @@ def receive_and_store_stream_message(message, subscription_id):
         message (dict): dict of article data
         subscription_id (str): stream subscription_id
     """
-    print(f'TYPE: {type(message)}, MESSAGE: {message}')
-    counter = 0
     if hasattr(receive_and_store_stream_message, 'counter'):
         receive_and_store_stream_message.counter += 1
-        counter = receive_and_store_stream_message.counter
 
     stream_obj = getattr(receive_and_store_stream_message, 'stream_obj', None)
     if not stream_obj:
@@ -33,12 +30,6 @@ def receive_and_store_stream_message(message, subscription_id):
             f'DowJonesStreamAPI: Stream Obj missing, '
             f'subscription_id: {subscription_id}, message: {message}'
         )
-        return False
-
-    max_message_limit = getattr(
-        receive_and_store_stream_message, 'max_message_limit', None
-    )
-    if max_message_limit and counter > max_message_limit:
         return False
 
     try:

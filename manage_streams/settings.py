@@ -9,10 +9,13 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
+import logging.config
 import os
 
 import environ
 from pathlib import Path
+
+from manage_streams.logging_conf import get_logging_config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -128,3 +131,10 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Logging configuration
+# ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/3.2/topics/logging/
+LOGGING_CONFIG = None
+LOGGING = get_logging_config()
+logging.config.dictConfig(LOGGING)

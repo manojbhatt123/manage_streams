@@ -5,6 +5,8 @@ command usage -
 python manage.py receive_and_store_stream_data -s 1
 """
 import logging
+import os
+import signal
 from time import sleep
 
 from django.core.management.base import BaseCommand
@@ -29,7 +31,7 @@ class Command(BaseCommand):
         )
         parser.add_argument(
             "-m", "--max_messages", action="store",
-            dest="max_messages", type=int, default=5,
+            dest="max_messages", type=int, default=500,
             help=(
                 "max messages limit, only for synchronous listener"
             )
@@ -46,6 +48,25 @@ class Command(BaseCommand):
             action='store_true',
             help='Flag to trigger sync/async listener',
         )
+
+    @staticmethod
+    def terminate_process():
+        """
+        method to kill the current process to exit as the listener is not
+        existing itself after call future.cancel or giving max message limit.
+
+        this method will be removed once we find a way to exist from
+        such processes.
+        """
+        # ToDo: Need to figure out a better way to exit
+        current_process_id = os.getpid()
+        for count in range(0, 10):
+            sleep(1)
+
+        logger.info(
+            f'DowJonesStreamAPI: Kill process id: {current_process_id}'
+        )
+        os.kill(current_process_id, signal.SIGTERM)
 
     def handle(self, *args, **options):
         stream_id = options.get('stream_id')
@@ -101,13 +122,18 @@ class Command(BaseCommand):
             # Close the listener and stop receiving messages after given ttl
             if future.running():
                 future.cancel()
+
+            logger.info(
+                f'DowJonesStreamAPI: Listener closed!'
+            )
         else:
             listener.listen(
                 receive_and_store_stream_message,
                 subscription_id=subscription_id,
                 maximum_messages=max_messages_limit
             )
-
         logger.info(
-            f'DowJonesStreamAPI: Listener closed!'
+            f'DowJonesStreamAPI: Total received messages: '
+            f'{receive_and_store_stream_message.counter}'
         )
+        self.terminate_process()
