@@ -19,14 +19,13 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    help = 'DowJones Event listener to create stories'
+    help = 'Stream listener to receive messages'
 
     def add_arguments(self, parser):
         parser.add_argument(
             "-s", "--stream_id", action="store",
             dest="stream_id", type=int, help=(
-                "DNA Stream primary key to get the stream "
-                "we would like to receive data"
+                "Stream primary key to initiate listener for specific stream"
             )
         )
         parser.add_argument(
