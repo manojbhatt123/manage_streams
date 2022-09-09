@@ -2,4 +2,4 @@ psycopg2==2.9.1
 Django==3.0.5
 django-environ==0.7.0
 https://github.com/contifyhub/django-fetch-streams/archive/refs/tags/v1.0.1.5.tar.gz
-git+https://git@github.com/dowjones/dj-dna-streams-python#egg=dnaStreaming
+git+https://github.com/chandesh/dj-dna-streams-python.git
